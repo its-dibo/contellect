@@ -1,0 +1,88 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      // automatically prepare the workspace when it opens
+      "label": "prepare the workspace",
+      "type": "shell",
+      "dependsOn": ["git: pull", "install dependencies"],
+      "dependsOrder": "sequence",
+      "runOptions": {
+        "runOn": "folderOpen"
+      },
+      "presentation": {
+        "reveal": "always",
+        "panel": "shared",
+        "revealProblems": "onProblem"
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "install dependencies",
+      "group": "build",
+      "type": "shell",
+      // using `npm ci` removes node_modules before installing
+      "command": "npm i -g pnpm && pnpm install",
+      "problemMatcher": [
+        // {
+        // 	"pattern": [
+        // 		{
+        // 			"regexp": "^npm ERR! (.*)$",
+        // 			"file": 1,
+        // 			"kind": "file",
+        // 		},
+        // 		{
+        // 			"regexp": "^npm ERR! (.*)$",
+        // 			"message": 1,
+        // 			"loop": true
+        // 		}
+        // 	]
+        // }
+      ],
+      "presentation": {
+        "reveal": "always",
+        "panel": "dedicated",
+        "revealProblems": "onProblem"
+      }
+    },
+    {
+      "label": "start a project",
+      "group": "build",
+      "type": "shell",
+      // todo: allow the user to select the env, i.e. run start:dev
+      // or `nx start ...`
+      "command": "npm start --prefix=apps/${input:project}",
+      "problemMatcher": []
+    },
+    {
+      "label": "npm: start projects in parallel",
+      "group": "build",
+      "type": "shell",
+      // todo: allow the user to select multiple project to be run in parallel
+      // to run npm commands in parallel use "&" instead of "&&", or use npm-run-all or concurrently
+      // for concurrently, use `--kill-others` to kill all commands if one dies
+      // for npm-run-all use `-p` to run scripts in parallel, also separate the options like this: `build -- --watch`
+      "command": "npx concurrently --kill-others \"npm run start:dev --prefix=apps/auto-backend\" \"npm run start:dev --prefix=apps/impactor\"",
+      "problemMatcher": []
+    },
+    {
+      "label": "git: pull",
+      "group": "build",
+      "type": "shell",
+      "command": "git pull"
+    }
+  ],
+  "presentation": {
+    "reveal": "always",
+    "panel": "dedicated",
+    "revealProblems": "onProblem"
+  },
+  "inputs": [
+    {
+      "id": "project",
+      "description": "the project name",
+      "type": "pickString",
+      "options": ["cms-backend", "cms-ui"]
+    }
+  ]
+}

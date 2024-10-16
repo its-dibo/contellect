@@ -1,0 +1,78 @@
+name: main-workflow
+on:
+  push:
+    branches:
+      # temporary disable CI/CD until all processes are fixed
+      # (unit testing, release, ...)
+      - main__
+      # --> only run ci when pushing or merging to main
+      #- "renovate/**"
+      #- "feat/**"
+      #- "fix/**"
+
+jobs:
+  # todo: use the output of this step in the next steps
+  # or use actions/upload-artifact to upload node_modules and dist folders,
+  # use `retention-days:1` to keep the prepare artifacts for short time
+  # https://github.com/actions/checkout/issues/19
+  # https://stackoverflow.com/a/74971730/12577650
+
+  # prepare:
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - run: echo "💡 start ${{ github.workflow }}, event:${{ github.event_name }}, os:${{ runner.os }}, repo:${{ github.repository }}, branch:${{ github.ref }}."
+  #     - uses: actions/checkout@v3
+  #     # todo: cache dependencies using github.com/actions/cache
+  #     - run: npm ci -f
+
+  test:
+    # needs: [prepare]
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+        # when a node version fails, remove it from testing and modify package.engines to require a higher version
+        # node-version: [18.x]
+    runs-on: ${{ matrix.os }}
+    steps:
+      # todo: use the checkout of the previous job
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          # node-version: ${{matrix.node-version}}
+          # uses package.engines, skipped if node-version is provided
+          # https://github.com/actions/setup-node/blob/main/docs/advanced-usage.md#node-version-file
+          # when node-version-file is provided remove node-version from matrix
+          # to prevent github from running the job multiple times, once for each matrix element
+          node-version-file: package.json
+        # todo: add node version to the step 'info'
+      - run: npm -v
+      - run: npm ci -f
+      - run: echo "💡 OS:${{matrix.os}}, Node:${{matrix.node-version}}"
+      - name: testing
+        # on windows: `set NODE_OPTIONS="..."`
+        # linux and mac: `export NODE_OPTIONS="..."`
+        run: npx cross-env NODE_OPTIONS="--max-old-space-size=8192" npm t
+
+  actions:
+    # to run actions like release without requiring tests to be passed remove `tests` from `needs[]`
+    needs: [test]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - run: npm ci -f
+      - name: delete draft releases from github
+        uses: hugo19941994/delete-draft-releases@v1.0.0
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: semantic release
+        # no need to run release in the root
+        run: npm run release -ws --if-preset
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+      - name: maintenance-tasks
+        run: npm run task maintenance -- --user=${{github.actor}}
+        # todo: only if changes
+        # todo: create a new branch
+      - run: "git add . && git commit -m 'build: maintenance tasks' && git push origin main"
+      - run: echo "💡 job status:${{ job.status }}."

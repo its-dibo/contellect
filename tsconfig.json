@@ -1,0 +1,77 @@
+{
+  "compileOnSave": false,
+  "compilerOptions": {
+    "jsx": "preserve",
+    "baseUrl": "./",
+    "outDir": "./dist/out-tsc",
+    "strict": true,
+    "forceConsistentCasingInFileNames": true,
+    "noImplicitReturns": true,
+    "noFallthroughCasesInSwitch": true,
+    "sourceMap": true,
+    "declaration": false,
+    "downlevelIteration": true,
+    "experimentalDecorators": true,
+    "moduleResolution": "node",
+    "importHelpers": true,
+    "target": "esnext",
+    "module": "esnext",
+    "lib": ["esnext", "dom", "dom.iterable"],
+    "types": ["node"],
+    "typeRoots": ["node_modules/@types", "**/@types"],
+    "removeComments": true,
+    "noEmit": false,
+    "noEmitOnError": false,
+    "noImplicitAny": true,
+    "noUnusedLocals": false,
+    "noUnusedParameters": false,
+    "preserveSymlinks": true,
+    "sourceRoot": "",
+    "mapRoot": "",
+    "emitDecoratorMetadata": true,
+    "resolveJsonModule": true,
+    "paths": {
+      "@engineers/*": ["./packages/*"],
+      "~~*": ["./*"]
+    },
+    "allowSyntheticDefaultImports": true,
+    "esModuleInterop": true,
+    // required for ts-jest
+    "allowJs": true,
+    "strictPropertyInitialization": false,
+    "skipLibCheck": true,
+    "isolatedModules": true,
+    "incremental": true
+  },
+  "exclude": [
+    "**/node_modules",
+    "**/dist",
+    "**/*.spec.ts",
+    "**/e2e",
+    "**/test.ts"
+  ],
+  "angularCompilerOptions": {
+    "enableIvy": true,
+    "strictTemplates": true,
+    "strictAttributeTypes": false,
+    "enableI18nLegacyMessageIdFormat": false,
+    "strictInjectionParameters": true,
+    "strictInputAccessModifiers": true
+  },
+  // tsconfig for `ts-node` only.
+  "ts-node": {
+    "compilerOptions": {
+      "sourceMap": false
+    },
+    // same as `ts-node --esm`
+    "esm": true,
+    "require": ["tsconfig-paths/register"],
+    "transpileOnly": true,
+    "moduleTypes": {
+      // compile `webpack.config.ts` as commonjs
+      "**/webpack.config.ts": "cjs",
+      "**/webpack.config.*.ts": "cjs",
+      "**/jest.config.ts": "cjs"
+    }
+  }
+}
