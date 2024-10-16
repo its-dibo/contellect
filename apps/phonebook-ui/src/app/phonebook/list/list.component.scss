@@ -1,0 +1,21 @@
+::ng-deep {
+  .ql-editor {
+    text-align: start;
+    // to support multiple directions in a single element
+    unicode-bidi: embed;
+  }
+
+  .ql-container {
+    // prevent it from overriding the body's font
+    font-family: inherit;
+  }
+  .ql-editor {
+    font-size: large;
+  }
+}
+
+#empty {
+  margin: 100px;
+  padding: 50px;
+  border: solid;
+}

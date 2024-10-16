@@ -1,0 +1,44 @@
+<mat-toolbar color="primary">
+  <a routerLink="/" id="site-logo">
+    @if (toolbarConfig?.logo?.type === "icon") {
+      <mat-icon>{{ toolbarConfig.logo.value }}</mat-icon>
+    } @else if (toolbarConfig?.logo?.type === "image") {
+      <img
+        src="{{ toolbarConfig.logo.value }}"
+        alt="logo"
+        width="50px"
+        height="50px"
+      />
+    }
+
+    <span matTooltip="{{ meta.description }}">{{ meta.name }}</span>
+  </a>
+
+  <!-- <div>
+    @for (route of toolbarConfig?.routes; track route) {
+      <span>
+        <a routerLink="{{ route.link }}">
+          <mat-icon *ngIf="route.icon">{{ route.icon }}</mat-icon>
+          {{ route.title }}</a
+        >
+      </span>
+    }
+  </div> -->
+
+  <div>
+    @if (user?.id) {
+      <div id="user-info">
+        <a
+          *ngIf="user?.username && user?.id"
+          routerLink="/users/{{ user?.id }}"
+          >{{ user?.username }}</a
+        >
+        <button mat-raised-button color="accent" (click)="logout()">
+          LogOut
+        </button>
+      </div>
+    } @else {
+      <button mat-raised-button color="accent" (click)="login()">Login</button>
+    }
+  </div>
+</mat-toolbar>

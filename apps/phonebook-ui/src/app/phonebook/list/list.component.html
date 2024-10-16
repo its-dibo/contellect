@@ -1,0 +1,48 @@
+<app-page
+  [alert]="alert()"
+  [loading]="isLoading()"
+  [meta]="meta()"
+  [floatButtons]="[
+    {
+      icon: 'add',
+      link: '/add',
+      tooltip: 'add a new contact',
+    },
+  ]"
+>
+  @let data = data$ | async;
+  @if (data) {
+    <h2>found {{ data.count || 0 }} contacts</h2>
+    <mat-list>
+      @for (item of data.data; track item.id) {
+        <mat-list-item
+          class="group cursor-pointer hover:bg-black hover:!text-white !rounded"
+        >
+          <mat-icon matListItemIcon class="group-hover:!text-white"
+            >person</mat-icon
+          >
+          <span matListItemTitle>
+            <span class="group-hover:font-medium group-hover:text-white">{{
+              item?.name
+            }}</span>
+            <span class="ml-4 text-xs invisible group-hover:visible">
+              <a routerLink="/{{ item.id }}">view</a> |
+              <a routerLink="/{{ item.id }}/edit">edit</a> |
+              <span>delete</span>
+            </span>
+          </span>
+          <span
+            matListItemLine
+            class="group-hover:font-bold group-hover:text-white italic"
+            >{{ item?.phone }}</span
+          >
+        </mat-list-item>
+      } @empty {
+        <div id="empty">
+          No Contacts!
+          <a routerLink="/add">click here to add your first contact</a>
+        </div>
+      }
+    </mat-list>
+  }
+</app-page>

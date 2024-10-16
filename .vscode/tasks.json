@@ -82,7 +82,7 @@
       "id": "project",
       "description": "the project name",
       "type": "pickString",
-      "options": ["cms-backend", "cms-ui"]
+      "options": ["cms-backend", "phonebook-ui"]
     }
   ]
 }

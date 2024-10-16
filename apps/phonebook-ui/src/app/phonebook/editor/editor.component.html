@@ -1,0 +1,15 @@
+<app-page [meta]="meta()" [alert]="alert()" [loading]="isLoading()">
+  <h1 title>
+    @if (!itemId()) {
+      Create a new contact
+    } @else {
+      edit contact details
+    }
+  </h1>
+
+  <app-form
+    [fields]="fields$ | async"
+    (submit)="onSubmit($event)"
+    [model]="model()"
+  ></app-form>
+</app-page>

@@ -1,0 +1,15 @@
+::ng-deep formly-field {
+  label,
+// the description hint, after each input
+  small,
+  // the input itself
+  .p-component {
+    // display: block;
+    width: 100%;
+  }
+
+  small {
+    color: gray;
+    font-style: italic;
+  }
+}
