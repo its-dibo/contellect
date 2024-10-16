@@ -2,6 +2,25 @@
 
 A monorepo that hosts multiple workspaces (apps and packages).
 
+## technical features
+
+- SOLID principals are applied
+- each function is well-documented as jsDocs
+- each route is documented and has full description details
+- the code is checked for quality and vulnerabilities via EsLint Rules
+- the code is automatically formatted when pushed to the upstream
+
+## technology used
+
+- NestJs (for the backend)
+- Angular (for UI)
+- Tailwind and material design (for styling)
+- jest (for unit testing)
+- esbuild (for bundling)
+- swagger (for documenting APIs)
+- PWA (progress web app) is enabled
+- Dockker for containerizing
+
 ## workspace structure
 
 - **packages:**

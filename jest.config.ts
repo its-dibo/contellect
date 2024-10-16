@@ -3,9 +3,12 @@ import type { Config } from '@jest/types';
 import { pathsToModuleNameMapper } from 'ts-jest';
 import { existsSync } from 'node:fs';
 import { resolve } from 'node:path';
-import { readSync } from '@engineers/nodejs';
 
 export default jestConfig();
+
+function readSync(path: string) {
+  throw 'not implemented';
+}
 
 export interface Options extends Config.InitialOptions {
   // path to the root dir of the project's jest.config, may be different that the root jest.config

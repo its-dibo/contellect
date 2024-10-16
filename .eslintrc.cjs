@@ -1,15 +1,6 @@
 /* eslint-disable sort-keys */
-// todo: enable all disabled rules, and level "warn" rules up to "error"
-// todo: create a task to install missing eslint plugins and parsers (from top scope and overrides), run as postinstall
-// `npm i -D eslint-plugin-$plugin-name
-// plugins.map(el=>!el.startsWith('@')?el.startsWith('eslint-plugin')?el:'eslint-plugin-'+el: ..)
 
 module.exports = {
-  // lint all file types, add plugins or parsers for unsupported types
-  // todo: is this replaces the cli option `--ext` that is set to '.js' only by default?
-  // todo: fix "Unexpected top-level property files"
-  // files: ["**/*.*"],
-  // ext: ".*",
   env: {
     browser: true,
     es6: true,
@@ -18,9 +9,6 @@ module.exports = {
   },
 
   // ignoring any non-standard file extensions to solve `the extension for the file () is non-standard`
-  // todo: including files without extensions such as `Dockerfile` "**/*",
-  // files in .gitignore are ignored by the cli option `--ignore-path=.gitignore`
-  // node_modules and dot files (.eslintrc) are ignored
   ignorePatterns: [
     "package-lock.json",
     "yarn.lock",
@@ -28,9 +16,6 @@ module.exports = {
     "**/LICENSE",
     "**/Dockerfile",
     "**/*.Dockerfile",
-    // todo: ignore all media and fonts files
-    // todo: extended pattern doesn't work, temporarily use each pattern separately
-    // https://github.com/eslint/eslint/issues/15958
     "**/*.{d.ts,d.mts,log,txt,webp,jpg,jpeg,png,gif,mp3,mp4,ico,webmanifest}",
     "**/*.d.ts",
     "**/*.d.mts",
@@ -40,37 +25,18 @@ module.exports = {
     "**/*.webp",
     "**/*.ico",
     "**/*.webmanifest",
-    // todo: https://github.com/ota-meshi/eslint-plugin-css/issues/34
-    // https://github.com/atfzl/eslint-plugin-css-modules/issues/74
     "**/*.css",
     "**/*.scss",
-    // todo: temporary
     "**/webpack.config.ts",
     "**/*.html",
     "**/templates/*",
-    // dotenv-vault files: .env.vault, .env.example
-    // this is overridden by !.env.vault in .gitignore, by using `eslint --ignore-path=.gitignore`
     "**/.env.*",
   ],
 
-  // to search eslint plugins: https://www.npmjs.com/search?q=keywords%3Aeslint-plugin
-  // to learn more about a plugin https://www.npmjs.com/package/eslint-plugin-$pluginName
-  // you may apply recommended rules of each plugin
-  // by adding $plugin/recommended to extends[]
-  // as of apps and packages requirements, add more plugins
   plugins: [
     "@typescript-eslint/eslint-plugin",
     // linting ES6 import/export syntax
-    // for example: Ensure imports point to a file/module that can be resolved
-    // todo: import VS require-path-exists
-    // https://github.com/import-js/eslint-plugin-import/issues/2452
     "import",
-    // todo: this causes errors with wsm projects
-    // https://github.com/gajus/eslint-plugin-jsdoc/issues/992
-    // also enable: extends.plugin:jsdoc/recommended, rules.jsdoc/require-param-type
-    // "jsdoc",
-    // extends the basic eslint rules
-    // https://github.com/typescript-eslint/typescript-eslint/tree/main/packages/eslint-plugin/docs/rules
     "@angular-eslint/eslint-plugin",
     // linting Angular templates
     "@angular-eslint/eslint-plugin-template",
@@ -107,7 +73,6 @@ module.exports = {
     "@html-eslint",
     "prettier",
     "css",
-    // todo: css vs css-modules
     "css-modules",
     "markdown",
   ],
@@ -116,40 +81,24 @@ module.exports = {
     "plugin:@typescript-eslint/recommended",
     "plugin:import/recommended",
     "plugin:import/typescript",
-    // "plugin:jsdoc/recommended",
-    // todo: enable these rules
-    // "plugin:regexp/recommended",
     "plugin:unicorn/recommended",
     "plugin:require-path-exists/recommended",
     "plugin:json/recommended",
     "plugin:n/recommended",
     "plugin:@microsoft/sdl/common",
     "plugin:@microsoft/sdl/node",
-    // disallows angular-bypass-sanitizer
-    // "plugin:@microsoft/sdl/angular",
     "plugin:security-node/recommended",
     "plugin:yaml/recommended",
     "plugin:anti-trojan-source/recommended",
     "plugin:sort-export-all/recommended",
-    // todo: Google JavaScript style guide
-    // https://google.github.io/styleguide/jsguide.html
-    // plugin: https://npmjs.com/package/eslint-config-google
-    // "google",
     "plugin:prettier/recommended",
     "plugin:css/recommended",
     "plugin:css-modules/recommended",
-    // lints inline angular templates i.e: inside .ts files
-    // or move to *.(?:component|directive|pipe|...).ts
-    // "plugin:@angular-eslint/template/process-inline-templates",
     "plugin:markdown/recommended",
   ],
 
-  // https://eslint.org/docs/rules/
-  // also see docs for each plugin
-  // use https://www.npmjs.com/package/eslint-rule-docs to find docs for a rule
   rules: {
     // sort object keys alphabetically
-    // todo: use eslint-plugin-sort-keys-fix to enable auto fixing
     "sort-keys": ["warn", "asc", { minKeys: 5 }],
     "prefer-let/prefer-let": 2,
     "prefer-const": "off",
@@ -158,15 +107,12 @@ module.exports = {
       "warn",
       {
         // ignore links
-        // todo: ignore any string inside code comments
         ignoreContent: ["https?://"],
       },
     ],
     "sort-imports": [
       "warn",
       {
-        // todo: disable this option https://github.com/eslint/eslint/issues/15957
-        // temporarily use ignoreDeclarationSort
         memberSyntaxSortOrder: ["none", "single", "all", "multiple"],
         allowSeparatedGroups: true,
         ignoreDeclarationSort: true,
@@ -178,8 +124,6 @@ module.exports = {
     // prevent duplicate packages in dependencies and devDependencies
     "json-files/require-unique-dependency-names": "error",
     "tree-shaking/no-side-effects-in-initialization": "off",
-    // todo: VS 'node/no-extraneous-import'
-    // todo: reports native modules https://github.com/lennym/eslint-plugin-implicit-dependencies/issues/7
     "implicit-dependencies/no-implicit": [
       "off",
       { dev: true, peer: true, optional: true },
@@ -196,14 +140,11 @@ module.exports = {
       },
     ],
 
-    // todo: switch to 'error' after resolving the commented issues
     "n/no-extraneous-import": [
       "warn",
       {
         allowModules: [
           "@jest/globals",
-          // todo: use wildcards or regex, or add to tasks/generate
-          // https://github.com/mysticatea/eslint-plugin-node/issues/332
           "@engineers/cache",
           "@engineers/databases",
           "@engineers/dom",
@@ -226,8 +167,6 @@ module.exports = {
           // allow packages that are included in the root workspace by default
           "webpack",
           "webpack-merge",
-          // todo: use tsconfig.compilerOptions.path
-          // todo: this causes eslint to stop formatting .ts files
           // "~~webpack.config",
         ],
         // tryExtensions: [".js", ".ts", ".json", ".node"],
