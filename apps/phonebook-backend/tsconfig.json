@@ -1,0 +1,19 @@
+{
+  "extends": "../../tsconfig.json",
+  "compilerOptions": {
+    "baseUrl": ".",
+    "outDir": "dist",
+    "paths": {
+      // todo: temporary copy the required internal packages here
+      // until building NestJs with a bundler like SWC
+      // currently Nestjs uses tsc and unable to import from outside the app
+      "@engineers/*": ["./src/packages/*", "../../packages/*"],
+      "#*": ["./src/packages/nestjs-crud/src/*", "./src/*"],
+      "~*": ["./*"],
+      "~~*": ["../../*"]
+    },
+    // todo: change to esm
+    "module": "commonjs"
+  },
+  "include": ["src/**/*.ts", "**/*.d.ts"]
+}
